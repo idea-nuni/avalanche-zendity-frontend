@@ -47,8 +47,13 @@ export function LoginPage() {
         </div>
       </div>
 
-      {/* 裝飾性網格 */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+      {/* 裝飾性網格 - 使用簡單的 CSS 背景 */}
+      <div className="absolute inset-0 opacity-20" 
+           style={{
+             backgroundImage: 'radial-gradient(circle, rgba(156, 146, 172, 0.05) 1px, transparent 1px)',
+             backgroundSize: '60px 60px'
+           }}>
+      </div>
     </div>
   )
 }
