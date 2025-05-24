@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -127,20 +128,20 @@ export function SupportedBlockchains() {
 
   const getSyncStatusText = (blockchain: Blockchain, isSyncing: boolean) => {
     if (isSyncing) {
-      return "正在同步身份驗證..."
+      return "Syncing identity verification..."
     }
     
     if (blockchain.status === 'connected') {
       return blockchain.lastSync 
-        ? `上次同步: ${new Date(blockchain.lastSync).toLocaleString()}`
-        : "已連接"
+        ? `Last synced: ${new Date(blockchain.lastSync).toLocaleString()}`
+        : "Connected"
     }
     
     if (blockchain.status === 'syncing') {
-      return "同步中..."
+      return "Syncing..."
     }
     
-    return "可同步身份驗證"
+    return "Available for identity sync"
   }
 
   return (
