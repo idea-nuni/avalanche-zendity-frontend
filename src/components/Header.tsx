@@ -23,19 +23,12 @@ export function Header() {
         {/* Logo */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-orange-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">A</span>
             </div>
-            <h1 className="text-xl font-bold text-gray-900">AVAX DApp</h1>
+            <h1 className="text-xl font-bold text-gray-900">AVAX Identity Verification</h1>
           </div>
         </div>
-
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
-          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Dashboard</a>
-          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Trading</a>
-          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Settings</a>
-        </nav>
 
         {/* Wallet Connection */}
         <div className="flex items-center space-x-4">
@@ -55,7 +48,7 @@ export function Header() {
                     <Badge variant="secondary" className="text-xs">
                       {connector?.name}
                     </Badge>
-                    <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-700">
+                    <Badge variant="secondary" className="text-xs bg-red-100 text-red-700">
                       AVAX C-Chain
                     </Badge>
                   </div>
@@ -80,7 +73,7 @@ export function Header() {
           ) : (
             <Dialog open={isWalletModalOpen} onOpenChange={setIsWalletModalOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button className="bg-red-600 hover:bg-red-700 text-white">
                   <Wallet className="w-4 h-4 mr-2" />
                   Connect Wallet
                 </Button>

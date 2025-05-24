@@ -1,12 +1,15 @@
 
-import { DashboardLayout } from '@/components/DashboardLayout'
-import { DashboardContent } from '@/components/DashboardContent'
+import { Header } from '@/components/Header'
+import { VerifyIdentitiesContent } from '@/components/VerifyIdentitiesContent'
 
 const Index = () => {
   return (
-    <DashboardLayout>
-      <DashboardContent />
-    </DashboardLayout>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="container mx-auto px-4 py-8">
+        <VerifyIdentitiesContent />
+      </div>
+    </div>
   )
 }
 
