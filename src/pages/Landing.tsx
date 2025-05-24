@@ -1,7 +1,8 @@
 
+import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { ShieldCheck, Zap, Globe, Users, ArrowDown, Network } from 'lucide-react'
+import { ShieldCheck, Zap, Network } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const Landing = () => {
@@ -32,7 +33,7 @@ const Landing = () => {
             </div>
             <span className="text-xl font-bold">Zendity</span>
           </div>
-          <Link to="/">
+          <Link to="/app">
             <Button variant="outline" className="border-gray-700 text-white hover:bg-gray-800">
               Launch App
             </Button>
@@ -57,7 +58,7 @@ const Landing = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/">
+            <Link to="/app">
               <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 text-lg">
                 Start Verification
               </Button>
@@ -134,7 +135,7 @@ const Landing = () => {
               <p className="text-gray-400">Uptime</p>
             </div>
             <div>
-              <div className="text-4xl font-bold text-yellow-400 mb-2">< 2s</div>
+              <div className="text-4xl font-bold text-yellow-400 mb-2">&lt; 2s</div>
               <p className="text-gray-400">Verification Time</p>
             </div>
           </div>
@@ -192,7 +193,7 @@ const Landing = () => {
               <p className="text-xl text-gray-400 mb-8">
                 Join thousands of users who trust Zendity for their cross-chain identity verification needs.
               </p>
-              <Link to="/">
+              <Link to="/app">
                 <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 text-lg">
                   Start Your Verification
                 </Button>
