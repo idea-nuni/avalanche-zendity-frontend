@@ -101,12 +101,12 @@ export function WalletConnector() {
                 onClick={() => connect({ connector })}
                 disabled={isPending}
                 variant="outline"
-                className="w-full justify-start border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-200"
+                className="w-full justify-start border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-200"
               >
-                <Wallet className="w-5 h-5 mr-3" />
+                <Wallet className="w-5 h-5 mr-3 text-blue-400" />
                 <div className="text-left">
-                  <div className="font-medium">{walletDisplay.name}</div>
-                  <div className="text-xs text-gray-400">{walletDisplay.description}</div>
+                  <div className="font-medium text-white">{walletDisplay.name}</div>
+                  <div className="text-xs text-gray-300">{walletDisplay.description}</div>
                 </div>
               </Button>
             </div>
