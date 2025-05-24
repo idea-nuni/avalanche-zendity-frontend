@@ -13,56 +13,63 @@ interface Blockchain {
   status: 'connected' | 'available' | 'syncing'
   lastSync: string | null
   network: string
+  type: 'c-chain' | 'l1'
 }
 
 const supportedBlockchains: Blockchain[] = [
   {
-    id: 'ethereum',
-    name: 'Ethereum',
-    logo: '🔷',
-    status: 'available',
-    lastSync: null,
-    network: 'Mainnet'
-  },
-  {
-    id: 'polygon',
-    name: 'Polygon',
-    logo: '🟣',
+    id: 'avax-c-chain',
+    name: 'Avalanche C-Chain',
+    logo: '🔴',
     status: 'connected',
     lastSync: '2024-01-15 14:30:00',
-    network: 'Mainnet'
+    network: 'C-Chain',
+    type: 'c-chain'
   },
   {
-    id: 'arbitrum',
-    name: 'Arbitrum',
-    logo: '🔵',
+    id: 'dexalot-l1',
+    name: 'Dexalot L1',
+    logo: '🟦',
     status: 'available',
     lastSync: null,
-    network: 'One'
+    network: 'L1',
+    type: 'l1'
   },
   {
-    id: 'optimism',
-    name: 'Optimism',
-    logo: '🔴',
+    id: 'gunzilla-l1',
+    name: 'Gunzilla L1',
+    logo: '⚫',
     status: 'available',
     lastSync: null,
-    network: 'Mainnet'
+    network: 'L1',
+    type: 'l1'
   },
   {
-    id: 'base',
-    name: 'Base',
-    logo: '🔷',
-    status: 'available',
-    lastSync: null,
-    network: 'Mainnet'
-  },
-  {
-    id: 'bsc',
-    name: 'BNB Chain',
-    logo: '🟡',
+    id: 'beam-l1',
+    name: 'Beam L1',
+    logo: '🟨',
     status: 'syncing',
     lastSync: '2024-01-15 12:15:00',
-    network: 'Mainnet'
+    network: 'L1',
+    type: 'l1'
+  },
+  {
+    id: 'amplify-l1',
+    name: 'Amplify L1',
+    logo: '🟢',
+    status: 'available',
+    lastSync: null,
+    network: 'L1',
+    type: 'l1'
+  },
+  {
+    id: 'xplus-l1',
+    name: 'XPlus L1',
+    logo: '🟣',
+    status: 'available',
+    lastSync: null,
+    network: 'L1',
+    type: 'l1'
   }
 ]
 
@@ -74,7 +81,7 @@ export function SupportedBlockchains() {
     setSyncingChains(prev => new Set(prev).add(blockchain.id))
     
     try {
-      // TODO: Call ICM function to sync identity across chains
+      // TODO: Call ICM function to sync identity across Avalanche L1s
       console.log(`Syncing identity to ${blockchain.name}...`)
       
       // Simulate transaction
@@ -131,21 +138,24 @@ export function SupportedBlockchains() {
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
           <Network className="w-5 h-5" />
-          <span>Supported Blockchains</span>
+          <span>Supported Avalanche Networks</span>
         </CardTitle>
         <CardDescription>
-          Sync your verified identity across multiple blockchain networks using ICM
+          Sync your verified identity across Avalanche C-Chain and L1 networks using ICM
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {supportedBlockchains.map((blockchain) => {
             const isSyncing = syncingChains.has(blockchain.id) || blockchain.status === 'syncing'
+            const isCChain = blockchain.type === 'c-chain'
             
             return (
               <div
                 key={blockchain.id}
-                className="p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                className={`p-4 border rounded-lg hover:bg-gray-50 transition-colors ${
+                  isCChain ? 'border-red-200 bg-red-50' : ''
+                }`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-3">
@@ -160,6 +170,11 @@ export function SupportedBlockchains() {
                 
                 <div className="flex items-center justify-between mb-3">
                   {getStatusBadge(blockchain.status)}
+                  {isCChain && (
+                    <Badge variant="outline" className="bg-red-100 text-red-700 border-red-300">
+                      Primary
+                    </Badge>
+                  )}
                 </div>
                 
                 {blockchain.lastSync && (
@@ -170,7 +185,7 @@ export function SupportedBlockchains() {
                 
                 <Button
                   onClick={() => handleSync(blockchain)}
-                  disabled={isSyncing || blockchain.status === 'connected'}
+                  disabled={isSyncing || blockchain.status === 'connected' || isCChain}
                   size="sm"
                   className={`w-full ${
                     blockchain.status === 'connected' 
@@ -178,7 +193,12 @@ export function SupportedBlockchains() {
                       : 'bg-blue-600 hover:bg-blue-700'
                   }`}
                 >
-                  {isSyncing ? (
+                  {isCChain ? (
+                    <>
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Source Chain
+                    </>
+                  ) : isSyncing ? (
                     <>
                       <Zap className="w-4 h-4 mr-2 animate-pulse" />
                       Syncing...
@@ -200,15 +220,15 @@ export function SupportedBlockchains() {
           })}
         </div>
         
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="mt-6 p-4 bg-red-50 rounded-lg border border-red-200">
           <div className="flex items-start space-x-3">
-            <Network className="w-5 h-5 text-blue-600 mt-0.5" />
+            <Network className="w-5 h-5 text-red-600 mt-0.5" />
             <div>
-              <h4 className="font-medium text-blue-900 mb-1">Cross-Chain Identity Sync</h4>
-              <p className="text-sm text-blue-700">
-                Once your identity is verified on AVAX C-Chain, you can sync it to other supported 
-                blockchains using Interchain Messaging (ICM). This allows you to use your verified 
-                identity across multiple networks seamlessly.
+              <h4 className="font-medium text-red-900 mb-1">Avalanche Cross-Chain Identity</h4>
+              <p className="text-sm text-red-700">
+                Your identity is verified on Avalanche C-Chain as the source of truth. You can then 
+                sync it to other Avalanche L1 networks using Interchain Messaging (ICM) for seamless 
+                cross-chain identity verification across the Avalanche ecosystem.
               </p>
             </div>
           </div>
