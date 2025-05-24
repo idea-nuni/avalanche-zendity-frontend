@@ -1,7 +1,9 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { keccak256, toBytes } from "viem";
 import {
   Card,
   CardContent,
@@ -40,6 +42,7 @@ type IdentityFormData = z.infer<typeof identitySchema>;
 
 export function IdentityVerificationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [computedHash, setComputedHash] = useState<string>("");
   const { toast } = useToast();
 
   const form = useForm<IdentityFormData>({
@@ -55,22 +58,43 @@ export function IdentityVerificationForm() {
     },
   });
 
+  const computeIdentityHash = (data: IdentityFormData): string => {
+    // Create a deterministic string from the form data
+    const dataString = JSON.stringify({
+      fullName: data.fullName.trim(),
+      email: data.email.trim().toLowerCase(),
+      phoneNumber: data.phoneNumber.trim(),
+      address: data.address.trim(),
+      documentType: data.documentType.trim(),
+      documentNumber: data.documentNumber.trim(),
+      additionalInfo: data.additionalInfo?.trim() || "",
+    });
+
+    // Compute keccak256 hash
+    const hash = keccak256(toBytes(dataString));
+    return hash;
+  };
+
   const onSubmit = async (data: IdentityFormData) => {
     setIsSubmitting(true);
     try {
-      // TODO: Submit to AVAX C-Chain contract
-      console.log("Submitting identity verification:", data);
+      // Compute the identity hash
+      const identityHash = computeIdentityHash(data);
+      setComputedHash(identityHash);
 
+      console.log("Identity Data:", data);
+      console.log("Computed Hash (bytes32):", identityHash);
+
+      // TODO: Submit to AVAX C-Chain contract with the hash
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       toast({
         title: "Identity Verification Submitted",
-        description:
-          "Your identity verification has been submitted to AVAX C-Chain successfully.",
+        description: `Identity hash: ${identityHash}`,
       });
 
-      form.reset();
+      // Don't reset form to show the computed hash
     } catch (error) {
       toast({
         title: "Submission Failed",
@@ -98,6 +122,17 @@ export function IdentityVerificationForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Show computed hash if available */}
+            {computedHash && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <h4 className="font-semibold text-green-800 mb-2">Identity Hash Generated</h4>
+                <p className="text-sm text-green-700 mb-2">bytes32 Hash:</p>
+                <code className="block p-2 bg-green-100 rounded text-sm font-mono text-green-800 break-all">
+                  {computedHash}
+                </code>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -211,7 +246,7 @@ export function IdentityVerificationForm() {
               {isSubmitting ? (
                 <>
                   <FileText className="w-4 h-4 mr-2 animate-spin" />
-                  Submitting...
+                  Computing Hash & Submitting...
                 </>
               ) : (
                 <>
