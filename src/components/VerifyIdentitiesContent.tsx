@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ShieldCheck, User, AlertTriangle, CheckCircle, Clock } from 'lucide-react'
+import { IdentityVerificationForm } from './IdentityVerificationForm'
+import { SupportedBlockchains } from './SupportedBlockchains'
 
 export function VerifyIdentitiesContent() {
   const { address, isConnected } = useAccount()
@@ -12,8 +14,8 @@ export function VerifyIdentitiesContent() {
     return (
       <div className="text-center py-12">
         <ShieldCheck className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Identity Verification</h2>
-        <p className="text-gray-600">Please connect your wallet to verify identities</p>
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Cross-Chain Identity Verification</h2>
+        <p className="text-gray-600">Please connect your wallet to start the identity verification process</p>
       </div>
     )
   }
@@ -22,8 +24,8 @@ export function VerifyIdentitiesContent() {
     <div className="space-y-6">
       {/* Title Area */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Identity Verification</h1>
-        <p className="text-gray-600 mt-2">Manage and verify user identities</p>
+        <h1 className="text-3xl font-bold text-gray-900">Cross-Chain Identity Verification</h1>
+        <p className="text-gray-600 mt-2">Verify your identity on AVAX C-Chain and sync across multiple blockchains</p>
       </div>
 
       {/* Verification Status Overview */}
@@ -91,35 +93,37 @@ export function VerifyIdentitiesContent() {
                 <span className="text-sm text-gray-500">Identity verification in progress</span>
               </div>
             </div>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-              <ShieldCheck className="w-4 h-4 mr-2" />
-              Start Verification
-            </Button>
           </div>
         </CardContent>
       </Card>
 
+      {/* Identity Verification Form */}
+      <IdentityVerificationForm />
+
+      {/* Supported Blockchains */}
+      <SupportedBlockchains />
+
       {/* Verification List */}
       <Card>
         <CardHeader>
-          <CardTitle>Verification Requests</CardTitle>
+          <CardTitle>Recent Verification Requests</CardTitle>
           <CardDescription>
-            Recent identity verification requests
+            Recent identity verification requests across all networks
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {[
-              { address: '0x742d35...8f1a', status: 'pending', time: '2 hours ago' },
-              { address: '0x893b21...4c2d', status: 'verified', time: '1 day ago' },
-              { address: '0x456ef7...9a1b', status: 'rejected', time: '2 days ago' },
+              { address: '0x742d35...8f1a', status: 'pending', time: '2 hours ago', network: 'AVAX C-Chain' },
+              { address: '0x893b21...4c2d', status: 'verified', time: '1 day ago', network: 'Polygon' },
+              { address: '0x456ef7...9a1b', status: 'rejected', time: '2 days ago', network: 'Ethereum' },
             ].map((item, index) => (
               <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <User className="w-8 h-8 text-gray-400" />
                   <div>
                     <p className="font-mono text-sm">{item.address}</p>
-                    <p className="text-xs text-gray-500">{item.time}</p>
+                    <p className="text-xs text-gray-500">{item.time} • {item.network}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
