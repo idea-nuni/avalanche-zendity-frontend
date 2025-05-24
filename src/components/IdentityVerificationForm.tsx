@@ -1,70 +1,87 @@
-
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { ShieldCheck, User, FileText } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { ShieldCheck, User, FileText } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const identitySchema = z.object({
-  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits'),
-  address: z.string().min(10, 'Address must be at least 10 characters'),
-  documentType: z.string().min(1, 'Please select a document type'),
-  documentNumber: z.string().min(5, 'Document number must be at least 5 characters'),
+  fullName: z.string().min(2, "Full name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
+  address: z.string().min(10, "Address must be at least 10 characters"),
+  documentType: z.string().min(1, "Please select a document type"),
+  documentNumber: z
+    .string()
+    .min(5, "Document number must be at least 5 characters"),
   additionalInfo: z.string().optional(),
-})
+});
 
-type IdentityFormData = z.infer<typeof identitySchema>
+type IdentityFormData = z.infer<typeof identitySchema>;
 
 export function IdentityVerificationForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
   const form = useForm<IdentityFormData>({
     resolver: zodResolver(identitySchema),
     defaultValues: {
-      fullName: '',
-      email: '',
-      phoneNumber: '',
-      address: '',
-      documentType: '',
-      documentNumber: '',
-      additionalInfo: '',
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      address: "",
+      documentType: "",
+      documentNumber: "",
+      additionalInfo: "",
     },
-  })
+  });
 
   const onSubmit = async (data: IdentityFormData) => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
       // TODO: Submit to AVAX C-Chain contract
-      console.log('Submitting identity verification:', data)
-      
+      console.log("Submitting identity verification:", data);
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       toast({
         title: "Identity Verification Submitted",
-        description: "Your identity verification has been submitted to AVAX C-Chain successfully.",
-      })
-      
-      form.reset()
+        description:
+          "Your identity verification has been submitted to AVAX C-Chain successfully.",
+      });
+
+      form.reset();
     } catch (error) {
       toast({
         title: "Submission Failed",
-        description: "Failed to submit identity verification. Please try again.",
+        description:
+          "Failed to submit identity verification. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Card>
@@ -74,7 +91,8 @@ export function IdentityVerificationForm() {
           <span>Submit Identity Verification</span>
         </CardTitle>
         <CardDescription>
-          Verify your identity on AVAX C-Chain by providing the required information
+          Verify your identity on AVAX C-Chain by providing the required
+          information
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -94,7 +112,7 @@ export function IdentityVerificationForm() {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="email"
@@ -102,13 +120,17 @@ export function IdentityVerificationForm() {
                   <FormItem>
                     <FormLabel>Email Address</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your email" type="email" {...field} />
+                      <Input
+                        placeholder="Enter your email"
+                        type="email"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="phoneNumber"
@@ -122,36 +144,25 @@ export function IdentityVerificationForm() {
                   </FormItem>
                 )}
               />
-              
-              <FormField
-                control={form.control}
-                name="documentType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Document Type</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Passport, Driver's License" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
+
               <FormField
                 control={form.control}
                 name="documentNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Document Number</FormLabel>
+                    <FormLabel>Government ID Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter document number" {...field} />
+                      <Input
+                        placeholder="Enter government ID number"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            
+
             <FormField
               control={form.control}
               name="address"
@@ -159,17 +170,17 @@ export function IdentityVerificationForm() {
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Enter your full address" 
+                    <Textarea
+                      placeholder="Enter your full address"
                       className="min-h-[80px]"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="additionalInfo"
@@ -177,22 +188,23 @@ export function IdentityVerificationForm() {
                 <FormItem>
                   <FormLabel>Additional Information (Optional)</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Any additional information you'd like to provide" 
+                    <Textarea
+                      placeholder="Any additional information you'd like to provide"
                       className="min-h-[80px]"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Provide any additional context that might help with verification
+                    Provide any additional context that might help with
+                    verification
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
-            <Button 
-              type="submit" 
+
+            <Button
+              type="submit"
               disabled={isSubmitting}
               className="w-full bg-blue-600 hover:bg-blue-700"
             >
@@ -212,5 +224,5 @@ export function IdentityVerificationForm() {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }
