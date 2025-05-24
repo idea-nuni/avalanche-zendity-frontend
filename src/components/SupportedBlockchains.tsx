@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -14,6 +13,10 @@ interface Blockchain {
   lastSync: string | null
   network: string
   type: 'c-chain' | 'l1'
+  chainId?: number
+  rpcUrl?: string
+  subnetId?: string
+  blockchainId?: string
 }
 
 const supportedBlockchains: Blockchain[] = [
@@ -27,49 +30,30 @@ const supportedBlockchains: Blockchain[] = [
     type: 'c-chain'
   },
   {
-    id: 'dexalot-l1',
-    name: 'Dexalot L1',
-    logo: '🟦',
+    id: 'echo-l1-testnet',
+    name: 'Echo L1 Testnet',
+    logo: '🔊',
     status: 'available',
     lastSync: null,
     network: 'L1',
-    type: 'l1'
+    type: 'l1',
+    chainId: 173750,
+    rpcUrl: 'https://subnets.avax.network/echo/testnet/rpc',
+    subnetId: 'i9gFpZQHPLcGfZaQLiwFAStddQD7iTKBpFfurPFJsXm1CkTZK',
+    blockchainId: '0x1278d1be4b987e847be3465940eb5066c4604a7fbd6e086900823597d81af4c1'
   },
   {
-    id: 'gunzilla-l1',
-    name: 'Gunzilla L1',
-    logo: '⚫',
+    id: 'dispatch-l1-testnet',
+    name: 'Dispatch L1 Testnet',
+    logo: '📨',
     status: 'available',
     lastSync: null,
     network: 'L1',
-    type: 'l1'
-  },
-  {
-    id: 'beam-l1',
-    name: 'Beam L1',
-    logo: '🟨',
-    status: 'syncing',
-    lastSync: '2024-01-15 12:15:00',
-    network: 'L1',
-    type: 'l1'
-  },
-  {
-    id: 'amplify-l1',
-    name: 'Amplify L1',
-    logo: '🟢',
-    status: 'available',
-    lastSync: null,
-    network: 'L1',
-    type: 'l1'
-  },
-  {
-    id: 'xplus-l1',
-    name: 'XPlus L1',
-    logo: '🟣',
-    status: 'available',
-    lastSync: null,
-    network: 'L1',
-    type: 'l1'
+    type: 'l1',
+    chainId: 779672,
+    rpcUrl: 'https://subnets.avax.network/dispatch/testnet/rpc',
+    subnetId: '7WtoAMPhrmh5KosDUsFL9yTcvw7YSxiKHPpdfs4JsgW47oZT5',
+    blockchainId: '0x9f3be606497285d0ffbb5ac9ba24aa60346a9b1812479ed66cb329f394a4b1c7'
   }
 ]
 
@@ -194,6 +178,11 @@ export function SupportedBlockchains() {
                       {isCChain && (
                         <Badge variant="outline" className="bg-red-100 text-red-700 border-red-300 text-xs">
                           Primary
+                        </Badge>
+                      )}
+                      {blockchain.chainId && (
+                        <Badge variant="outline" className="text-xs">
+                          Chain ID: {blockchain.chainId}
                         </Badge>
                       )}
                     </div>
