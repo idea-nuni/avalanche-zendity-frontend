@@ -1,4 +1,3 @@
-
 import { useAccount } from 'wagmi'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -14,8 +13,8 @@ export function VerifyIdentitiesContent() {
     return (
       <div className="text-center py-12">
         <ShieldCheck className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Cross-Chain Identity Verification</h2>
-        <p className="text-gray-600">Please connect your wallet to start the identity verification process</p>
+        <h2 className="text-xl font-semibold text-white mb-2">Zendity</h2>
+        <p className="text-gray-400">Please connect your wallet to start the identity verification process</p>
       </div>
     )
   }
@@ -24,8 +23,8 @@ export function VerifyIdentitiesContent() {
     <div className="space-y-6">
       {/* Title Area */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Cross-Chain Identity Verification</h1>
-        <p className="text-gray-600 mt-2">Verify your identity on AVAX C-Chain and sync across multiple blockchains</p>
+        <h1 className="text-3xl font-bold text-white">Zendity</h1>
+        <p className="text-gray-400 mt-2">Verify your identity on AVAX C-Chain and sync across multiple blockchains</p>
       </div>
 
       {/* Verification Status Overview */}
