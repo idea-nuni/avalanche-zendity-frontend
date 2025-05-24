@@ -14,12 +14,12 @@ import {
 
 const menuItems = [
   {
-    title: "儀表板",
+    title: "Dashboard",
     url: "/",
     icon: Home,
   },
   {
-    title: "身份驗證",
+    title: "Verify Identities",
     url: "/verify-identities",
     icon: ShieldCheck,
   },
@@ -32,7 +32,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>導航</SidebarGroupLabel>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (

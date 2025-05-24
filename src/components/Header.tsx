@@ -32,9 +32,9 @@ export function Header() {
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">儀表板</a>
-          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">交易</a>
-          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">設定</a>
+          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Dashboard</a>
+          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Trading</a>
+          <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Settings</a>
         </nav>
 
         {/* Wallet Connection */}
@@ -50,7 +50,7 @@ export function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-3 py-2 border-b">
-                  <p className="text-sm font-medium">已連接錢包</p>
+                  <p className="text-sm font-medium">Connected Wallet</p>
                   <div className="flex items-center justify-between mt-1">
                     <Badge variant="secondary" className="text-xs">
                       {connector?.name}
@@ -62,18 +62,18 @@ export function Header() {
                 </div>
                 <DropdownMenuItem>
                   <User className="w-4 h-4 mr-2" />
-                  個人資料
+                  Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Settings className="w-4 h-4 mr-2" />
-                  設定
+                  Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => disconnect()}
                   className="text-red-600 focus:text-red-600"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
-                  斷開連接
+                  Disconnect
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -82,12 +82,12 @@ export function Header() {
               <DialogTrigger asChild>
                 <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Wallet className="w-4 h-4 mr-2" />
-                  連接錢包
+                  Connect Wallet
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                  <DialogTitle className="text-center">連接錢包</DialogTitle>
+                  <DialogTitle className="text-center">Connect Wallet</DialogTitle>
                 </DialogHeader>
                 <div className="mt-4">
                   <WalletConnector onConnect={() => setIsWalletModalOpen(false)} />

@@ -4,23 +4,23 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Wallet, CheckCircle } from 'lucide-react'
 
-// 錢包顯示名稱映射
+// Wallet display names mapping
 const walletDisplayNames: Record<string, { name: string; description: string }> = {
   'MetaMask': { 
     name: 'MetaMask', 
-    description: '最受歡迎的以太坊錢包' 
+    description: 'Most popular Ethereum wallet' 
   },
   'WalletConnect': { 
     name: 'WalletConnect', 
-    description: '連接移動錢包' 
+    description: 'Connect mobile wallets' 
   },
   'Injected': { 
-    name: '瀏覽器錢包', 
-    description: '使用瀏覽器內建錢包' 
+    name: 'Browser Wallet', 
+    description: 'Use browser built-in wallet' 
   },
   'Coinbase Wallet': { 
     name: 'Coinbase Wallet', 
-    description: 'Coinbase 官方錢包' 
+    description: 'Official Coinbase wallet' 
   }
 }
 
@@ -32,18 +32,18 @@ export function WalletConnector({ onConnect }: WalletConnectorProps) {
   const { connectors, connect, isPending } = useConnect()
   const { address, isConnected, connector } = useAccount()
 
-  // 獲取錢包顯示信息
+  // Get wallet display information
   const getWalletDisplay = (connectorName: string) => {
     return walletDisplayNames[connectorName] || { 
       name: connectorName, 
-      description: '支援的錢包' 
+      description: 'Supported wallet' 
     }
   }
 
   const handleConnect = (connector: any) => {
     connect({ connector })
     if (onConnect) {
-      // 延遲執行以確保連接完成
+      // Delay execution to ensure connection completes
       setTimeout(() => {
         onConnect()
       }, 1000)
@@ -57,13 +57,13 @@ export function WalletConnector({ onConnect }: WalletConnectorProps) {
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center space-x-2 mb-4">
           <CheckCircle className="w-8 h-8 text-green-500" />
-          <h3 className="text-lg font-semibold text-gray-900">錢包已連接</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Wallet Connected</h3>
         </div>
         <p className="text-sm text-gray-600 mb-4">
-          您已成功連接到 AVAX C-Chain
+          You have successfully connected to AVAX C-Chain
         </p>
         <div className="p-4 rounded-lg bg-gray-50 border">
-          <p className="text-sm text-gray-600 mb-2">錢包地址:</p>
+          <p className="text-sm text-gray-600 mb-2">Wallet Address:</p>
           <p className="text-gray-900 font-mono text-sm break-all">
             {address}
           </p>
@@ -84,7 +84,7 @@ export function WalletConnector({ onConnect }: WalletConnectorProps) {
     <div className="space-y-4">
       <div className="text-center mb-6">
         <p className="text-gray-600">
-          選擇您的錢包以連接到 AVAX C-Chain
+          Choose your wallet to connect to AVAX C-Chain
         </p>
       </div>
       <div className="space-y-3">
@@ -97,7 +97,7 @@ export function WalletConnector({ onConnect }: WalletConnectorProps) {
               onClick={() => handleConnect(connector)}
               disabled={isPending}
               variant="outline"
-              className="w-full justify-start h-auto p-4 border-gray-200 hover:border-blue-300 hover:bg-blue-50"
+              className="w-full justify-start h-auto p-4 border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-900"
             >
               <Wallet className="w-5 h-5 mr-3 text-blue-500" />
               <div className="text-left">
@@ -110,7 +110,7 @@ export function WalletConnector({ onConnect }: WalletConnectorProps) {
       </div>
       <div className="pt-4 border-t border-gray-200">
         <p className="text-xs text-gray-500 text-center">
-          連接錢包即表示您同意我們的服務條款
+          By connecting a wallet, you agree to our Terms of Service
         </p>
       </div>
     </div>
