@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Network, Zap, CheckCircle, Clock } from 'lucide-react'
+import { Network, Zap, CheckCircle, Clock, ChevronRight } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
 interface Blockchain {
@@ -111,18 +111,26 @@ export function SupportedBlockchains() {
     }
   }
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string, isSyncing: boolean) => {
+    if (isSyncing) {
+      return <Clock className="w-5 h-5 text-yellow-600 animate-spin" />
+    }
+    
     switch (status) {
       case 'connected':
-        return <CheckCircle className="w-4 h-4 text-green-600" />
+        return <CheckCircle className="w-5 h-5 text-green-600" />
       case 'syncing':
-        return <Clock className="w-4 h-4 text-yellow-600 animate-spin" />
+        return <Clock className="w-5 h-5 text-yellow-600 animate-spin" />
       default:
-        return <Network className="w-4 h-4 text-gray-400" />
+        return <Network className="w-5 h-5 text-gray-400" />
     }
   }
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string, isSyncing: boolean) => {
+    if (isSyncing) {
+      return <Badge className="bg-yellow-100 text-yellow-700">Syncing</Badge>
+    }
+    
     switch (status) {
       case 'connected':
         return <Badge className="bg-green-100 text-green-700">Connected</Badge>
@@ -131,6 +139,24 @@ export function SupportedBlockchains() {
       default:
         return <Badge variant="secondary">Available</Badge>
     }
+  }
+
+  const getSyncStatusText = (blockchain: Blockchain, isSyncing: boolean) => {
+    if (isSyncing) {
+      return "正在同步身份驗證..."
+    }
+    
+    if (blockchain.status === 'connected') {
+      return blockchain.lastSync 
+        ? `上次同步: ${new Date(blockchain.lastSync).toLocaleString()}`
+        : "已連接"
+    }
+    
+    if (blockchain.status === 'syncing') {
+      return "同步中..."
+    }
+    
+    return "可同步身份驗證"
   }
 
   return (
@@ -145,7 +171,7 @@ export function SupportedBlockchains() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-3">
           {supportedBlockchains.map((blockchain) => {
             const isSyncing = syncingChains.has(blockchain.id) || blockchain.status === 'syncing'
             const isCChain = blockchain.type === 'c-chain'
@@ -153,68 +179,72 @@ export function SupportedBlockchains() {
             return (
               <div
                 key={blockchain.id}
-                className={`p-4 border rounded-lg hover:bg-gray-50 transition-colors ${
-                  isCChain ? 'border-red-200 bg-red-50' : ''
+                className={`flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors ${
+                  isCChain ? 'border-red-200 bg-red-50' : 'border-gray-200'
                 }`}
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl">{blockchain.logo}</span>
-                    <div>
+                <div className="flex items-center space-x-4 flex-1">
+                  <span className="text-2xl">{blockchain.logo}</span>
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-1">
                       <h3 className="font-medium text-gray-900">{blockchain.name}</h3>
-                      <p className="text-sm text-gray-500">{blockchain.network}</p>
+                      <Badge variant="outline" className="text-xs">
+                        {blockchain.network}
+                      </Badge>
+                      {isCChain && (
+                        <Badge variant="outline" className="bg-red-100 text-red-700 border-red-300 text-xs">
+                          Primary
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      {getStatusIcon(blockchain.status, isSyncing)}
+                      <span className="text-sm text-gray-600">
+                        {getSyncStatusText(blockchain, isSyncing)}
+                      </span>
                     </div>
                   </div>
-                  {getStatusIcon(blockchain.status)}
                 </div>
                 
-                <div className="flex items-center justify-between mb-3">
-                  {getStatusBadge(blockchain.status)}
-                  {isCChain && (
-                    <Badge variant="outline" className="bg-red-100 text-red-700 border-red-300">
-                      Primary
-                    </Badge>
-                  )}
+                <div className="flex items-center space-x-3">
+                  {getStatusBadge(blockchain.status, isSyncing)}
+                  
+                  <Button
+                    onClick={() => handleSync(blockchain)}
+                    disabled={isSyncing || blockchain.status === 'connected' || isCChain}
+                    size="sm"
+                    variant={blockchain.status === 'connected' ? 'default' : 'outline'}
+                    className={`${
+                      blockchain.status === 'connected' 
+                        ? 'bg-green-600 hover:bg-green-700 text-white' 
+                        : ''
+                    }`}
+                  >
+                    {isCChain ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Source Chain
+                      </>
+                    ) : isSyncing ? (
+                      <>
+                        <Zap className="w-4 h-4 mr-2 animate-pulse" />
+                        Syncing...
+                      </>
+                    ) : blockchain.status === 'connected' ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Synced
+                      </>
+                    ) : (
+                      <>
+                        <Zap className="w-4 h-4 mr-2" />
+                        Sync Identity
+                      </>
+                    )}
+                  </Button>
+                  
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
                 </div>
-                
-                {blockchain.lastSync && (
-                  <p className="text-xs text-gray-500 mb-3">
-                    Last sync: {new Date(blockchain.lastSync).toLocaleString()}
-                  </p>
-                )}
-                
-                <Button
-                  onClick={() => handleSync(blockchain)}
-                  disabled={isSyncing || blockchain.status === 'connected' || isCChain}
-                  size="sm"
-                  className={`w-full ${
-                    blockchain.status === 'connected' 
-                      ? 'bg-green-600 hover:bg-green-700' 
-                      : 'bg-blue-600 hover:bg-blue-700'
-                  }`}
-                >
-                  {isCChain ? (
-                    <>
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Source Chain
-                    </>
-                  ) : isSyncing ? (
-                    <>
-                      <Zap className="w-4 h-4 mr-2 animate-pulse" />
-                      Syncing...
-                    </>
-                  ) : blockchain.status === 'connected' ? (
-                    <>
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Synced
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="w-4 h-4 mr-2" />
-                      Sync Identity
-                    </>
-                  )}
-                </Button>
               </div>
             )
           })}
