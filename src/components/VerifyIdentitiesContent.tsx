@@ -102,62 +102,6 @@ export function VerifyIdentitiesContent() {
 
       {/* Supported Blockchains */}
       <SupportedBlockchains />
-
-      {/* Verification List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Verification Requests</CardTitle>
-          <CardDescription>
-            Recent identity verification requests across all networks
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {[
-              { address: '0x742d35...8f1a', status: 'pending', time: '2 hours ago', network: 'AVAX C-Chain' },
-              { address: '0x893b21...4c2d', status: 'verified', time: '1 day ago', network: 'Polygon' },
-              { address: '0x456ef7...9a1b', status: 'rejected', time: '2 days ago', network: 'Ethereum' },
-            ].map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center space-x-4">
-                  <User className="w-8 h-8 text-gray-400" />
-                  <div>
-                    <p className="font-mono text-sm">{item.address}</p>
-                    <p className="text-xs text-gray-500">{item.time} • {item.network}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Badge 
-                    variant={
-                      item.status === 'verified' ? 'default' : 
-                      item.status === 'pending' ? 'secondary' : 
-                      'destructive'
-                    }
-                    className={
-                      item.status === 'verified' ? 'bg-green-100 text-green-700' :
-                      item.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-red-100 text-red-700'
-                    }
-                  >
-                    {item.status === 'verified' ? 'Verified' :
-                     item.status === 'pending' ? 'Pending' : 'Rejected'}
-                  </Badge>
-                  {item.status === 'pending' && (
-                    <div className="space-x-2">
-                      <Button size="sm" variant="outline" className="text-green-600">
-                        Approve
-                      </Button>
-                      <Button size="sm" variant="outline" className="text-red-600">
-                        Reject
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }
