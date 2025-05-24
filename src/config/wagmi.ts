@@ -1,10 +1,10 @@
 
 import { createConfig, http } from 'wagmi'
-import { avalanche } from 'wagmi/chains'
+import {  avalancheFuji } from 'wagmi/chains'
 import { injected, walletConnect, metaMask } from '@wagmi/connectors'
 
 export const config = createConfig({
-  chains: [avalanche],
+  chains: [avalancheFuji],
   connectors: [
     injected(),
     metaMask(),
@@ -19,7 +19,8 @@ export const config = createConfig({
     }),
   ],
   transports: {
-    [avalanche.id]: http(),
+    [avalancheFuji.id]: http(),
+
   },
 })
 

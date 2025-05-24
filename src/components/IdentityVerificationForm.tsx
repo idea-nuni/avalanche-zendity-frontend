@@ -1,9 +1,14 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { keccak256, toBytes } from "viem";
+import {
+  useAccount,
+  useWriteContract,
+  useWaitForTransactionReceipt,
+} from "wagmi";
+import { avalancheFuji } from "wagmi/chains";
 import {
   Card,
   CardContent,
@@ -25,13 +30,13 @@ import {
 } from "@/components/ui/form";
 import { ShieldCheck, User, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { USER_PROOF_HUB } from "@/constants";
 
 const identitySchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
   address: z.string().min(10, "Address must be at least 10 characters"),
-  documentType: z.string().min(1, "Please select a document type"),
   documentNumber: z
     .string()
     .min(5, "Document number must be at least 5 characters"),
@@ -40,10 +45,54 @@ const identitySchema = z.object({
 
 type IdentityFormData = z.infer<typeof identitySchema>;
 
+// Contract ABI for the verify function
+const CONTRACT_ABI = [
+  {
+    inputs: [
+      { name: "user", type: "address" },
+      { name: "proofHash", type: "bytes32" },
+    ],
+    name: "verify",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+] as const;
+
 export function IdentityVerificationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [computedHash, setComputedHash] = useState<string>("");
   const { toast } = useToast();
+  const { address, isConnected } = useAccount();
+  const { writeContract, data: hash, error, isPending } = useWriteContract();
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
+
+  // Handle transaction status changes
+  useEffect(() => {
+    if (isConfirmed) {
+      setIsSubmitting(false);
+      toast({
+        title: "Identity Verification Successful!",
+        description: `Your identity has been verified on AVAX Fuji C-Chain. Transaction hash: ${hash}`,
+      });
+    }
+  }, [isConfirmed, toast, hash]);
+
+  useEffect(() => {
+    if (error) {
+      setIsSubmitting(false);
+      toast({
+        title: "Transaction Failed",
+        description:
+          error.message || "Failed to submit transaction. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
 
   const form = useForm<IdentityFormData>({
     resolver: zodResolver(identitySchema),
@@ -52,7 +101,6 @@ export function IdentityVerificationForm() {
       email: "",
       phoneNumber: "",
       address: "",
-      documentType: "",
       documentNumber: "",
       additionalInfo: "",
     },
@@ -65,7 +113,6 @@ export function IdentityVerificationForm() {
       email: data.email.trim().toLowerCase(),
       phoneNumber: data.phoneNumber.trim(),
       address: data.address.trim(),
-      documentType: data.documentType.trim(),
       documentNumber: data.documentNumber.trim(),
       additionalInfo: data.additionalInfo?.trim() || "",
     });
@@ -76,6 +123,17 @@ export function IdentityVerificationForm() {
   };
 
   const onSubmit = async (data: IdentityFormData) => {
+    console.log("onSubmit :", onSubmit);
+    if (!isConnected || !address) {
+      toast({
+        title: "Wallet Not Connected",
+        description:
+          "Please connect your wallet to submit identity verification.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       // Compute the identity hash
@@ -84,25 +142,25 @@ export function IdentityVerificationForm() {
 
       console.log("Identity Data:", data);
       console.log("Computed Hash (bytes32):", identityHash);
+      console.log("User Address:", address);
 
-      // TODO: Submit to AVAX C-Chain contract with the hash
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      toast({
-        title: "Identity Verification Submitted",
-        description: `Identity hash: ${identityHash}`,
+      // Call the smart contract verify function
+      writeContract({
+        address: USER_PROOF_HUB,
+        abi: CONTRACT_ABI,
+        functionName: "verify",
+        args: [address as `0x${string}`, identityHash as `0x${string}`],
+        chain: avalancheFuji,
+        account: address as `0x${string}`,
       });
-
-      // Don't reset form to show the computed hash
     } catch (error) {
+      console.error("Submission error:", error);
       toast({
         title: "Submission Failed",
         description:
           "Failed to submit identity verification. Please try again.",
         variant: "destructive",
       });
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -125,11 +183,36 @@ export function IdentityVerificationForm() {
             {/* Show computed hash if available */}
             {computedHash && (
               <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                <h4 className="font-semibold text-green-800 mb-2">Identity Hash Generated</h4>
+                <h4 className="font-semibold text-green-800 mb-2">
+                  Identity Proof Generated
+                </h4>
                 <p className="text-sm text-green-700 mb-2">bytes32 Hash:</p>
                 <code className="block p-2 bg-green-100 rounded text-sm font-mono text-green-800 break-all">
                   {computedHash}
                 </code>
+              </div>
+            )}
+
+            {/* Show transaction status */}
+            {hash && (
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="font-semibold text-blue-800 mb-2">
+                  Transaction Submitted
+                </h4>
+                <p className="text-sm text-blue-700 mb-2">Transaction Hash:</p>
+                <code className="block p-2 bg-blue-100 rounded text-sm font-mono text-blue-800 break-all">
+                  {hash}
+                </code>
+                {isConfirming && (
+                  <p className="text-sm text-blue-600 mt-2">
+                    Waiting for confirmation on AVAX Fuji...
+                  </p>
+                )}
+                {isConfirmed && (
+                  <p className="text-sm text-green-600 mt-2 font-semibold">
+                    ✅ Transaction Confirmed! Identity verified on-chain.
+                  </p>
+                )}
               </div>
             )}
 
@@ -240,10 +323,20 @@ export function IdentityVerificationForm() {
 
             <Button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isPending || isConfirming}
               className="w-full bg-blue-600 hover:bg-blue-700"
             >
-              {isSubmitting ? (
+              {isConfirming ? (
+                <>
+                  <FileText className="w-4 h-4 mr-2 animate-spin" />
+                  Confirming Transaction...
+                </>
+              ) : isPending ? (
+                <>
+                  <FileText className="w-4 h-4 mr-2 animate-spin" />
+                  Waiting for Approval...
+                </>
+              ) : isSubmitting ? (
                 <>
                   <FileText className="w-4 h-4 mr-2 animate-spin" />
                   Computing Hash & Submitting...
