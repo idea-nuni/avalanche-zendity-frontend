@@ -3,12 +3,12 @@ import { WalletConnector } from './WalletConnector'
 
 export function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
       {/* Background animation elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-2000"></div>
       </div>
 
       {/* Main content */}
@@ -48,9 +48,9 @@ export function LoginPage() {
       </div>
 
       {/* Decorative grid using simple CSS background */}
-      <div className="absolute inset-0 opacity-20" 
+      <div className="absolute inset-0 opacity-10" 
            style={{
-             backgroundImage: 'radial-gradient(circle, rgba(156, 146, 172, 0.05) 1px, transparent 1px)',
+             backgroundImage: 'radial-gradient(circle, rgba(156, 146, 172, 0.1) 1px, transparent 1px)',
              backgroundSize: '60px 60px'
            }}>
       </div>
