@@ -98,14 +98,14 @@ export function SupportedBlockchains() {
 
   const getStatusIcon = (status: string, isSyncing: boolean) => {
     if (isSyncing) {
-      return <Clock className="w-5 h-5 text-yellow-600 animate-spin" />
+      return <Clock className="w-5 h-5 text-yellow-400 animate-spin" />
     }
     
     switch (status) {
       case 'connected':
-        return <CheckCircle className="w-5 h-5 text-green-600" />
+        return <CheckCircle className="w-5 h-5 text-green-400" />
       case 'syncing':
-        return <Clock className="w-5 h-5 text-yellow-600 animate-spin" />
+        return <Clock className="w-5 h-5 text-yellow-400 animate-spin" />
       default:
         return <Network className="w-5 h-5 text-gray-400" />
     }
@@ -113,16 +113,16 @@ export function SupportedBlockchains() {
 
   const getStatusBadge = (status: string, isSyncing: boolean) => {
     if (isSyncing) {
-      return <Badge className="bg-yellow-100 text-yellow-700">Syncing</Badge>
+      return <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30">Syncing</Badge>
     }
     
     switch (status) {
       case 'connected':
-        return <Badge className="bg-green-100 text-green-700">Connected</Badge>
+        return <Badge className="bg-green-500/20 text-green-300 border-green-500/30">Connected</Badge>
       case 'syncing':
-        return <Badge className="bg-yellow-100 text-yellow-700">Syncing</Badge>
+        return <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30">Syncing</Badge>
       default:
-        return <Badge variant="secondary">Available</Badge>
+        return <Badge variant="secondary" className="bg-gray-700 text-gray-300 border-gray-600">Available</Badge>
     }
   }
 
@@ -145,13 +145,13 @@ export function SupportedBlockchains() {
   }
 
   return (
-    <Card>
+    <Card className="bg-gray-900 border-gray-700">
       <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
+        <CardTitle className="flex items-center space-x-2 text-white">
           <Network className="w-5 h-5" />
           <span>Supported Avalanche Networks</span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-400">
           Sync your verified identity across Avalanche C-Chain and L1 networks using ICM
         </CardDescription>
       </CardHeader>
@@ -164,32 +164,34 @@ export function SupportedBlockchains() {
             return (
               <div
                 key={blockchain.id}
-                className={`flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors ${
-                  isCChain ? 'border-red-200 bg-red-50' : 'border-gray-200'
+                className={`flex items-center justify-between p-4 border rounded-lg transition-all duration-200 ${
+                  isCChain 
+                    ? 'border-red-500/30 bg-red-500/5 hover:bg-red-500/10' 
+                    : 'border-gray-600 bg-gray-800/50 hover:bg-gray-700/50'
                 }`}
               >
                 <div className="flex items-center space-x-4 flex-1">
                   <span className="text-2xl">{blockchain.logo}</span>
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-medium text-gray-900">{blockchain.name}</h3>
-                      <Badge variant="outline" className="text-xs">
+                      <h3 className="font-medium text-white">{blockchain.name}</h3>
+                      <Badge variant="outline" className="text-xs bg-gray-700 text-gray-300 border-gray-600">
                         {blockchain.network}
                       </Badge>
                       {isCChain && (
-                        <Badge variant="outline" className="bg-red-100 text-red-700 border-red-300 text-xs">
+                        <Badge variant="outline" className="bg-red-500/20 text-red-300 border-red-500/30 text-xs">
                           Primary
                         </Badge>
                       )}
                       {blockchain.chainId && (
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="outline" className="text-xs bg-gray-700 text-gray-300 border-gray-600">
                           Chain ID: {blockchain.chainId}
                         </Badge>
                       )}
                     </div>
                     <div className="flex items-center space-x-2">
                       {getStatusIcon(blockchain.status, isSyncing)}
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm text-gray-400">
                         {getSyncStatusText(blockchain, isSyncing)}
                       </span>
                     </div>
@@ -206,8 +208,8 @@ export function SupportedBlockchains() {
                     variant={blockchain.status === 'connected' ? 'default' : 'outline'}
                     className={`${
                       blockchain.status === 'connected' 
-                        ? 'bg-green-600 hover:bg-green-700 text-white' 
-                        : ''
+                        ? 'bg-green-600 hover:bg-green-700 text-white border-green-600' 
+                        : 'bg-gray-800 hover:bg-gray-700 text-gray-300 border-gray-600'
                     }`}
                   >
                     {isCChain ? (
@@ -233,19 +235,19 @@ export function SupportedBlockchains() {
                     )}
                   </Button>
                   
-                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                  <ChevronRight className="w-4 h-4 text-gray-500" />
                 </div>
               </div>
             )
           })}
         </div>
         
-        <div className="mt-6 p-4 bg-red-50 rounded-lg border border-red-200">
+        <div className="mt-6 p-4 bg-red-500/10 rounded-lg border border-red-500/20">
           <div className="flex items-start space-x-3">
-            <Network className="w-5 h-5 text-red-600 mt-0.5" />
+            <Network className="w-5 h-5 text-red-400 mt-0.5" />
             <div>
-              <h4 className="font-medium text-red-900 mb-1">Avalanche Cross-Chain Identity</h4>
-              <p className="text-sm text-red-700">
+              <h4 className="font-medium text-red-300 mb-1">Avalanche Cross-Chain Identity</h4>
+              <p className="text-sm text-red-200">
                 Your identity is verified on Avalanche C-Chain as the source of truth. You can then 
                 sync it to other Avalanche L1 networks using Interchain Messaging (ICM) for seamless 
                 cross-chain identity verification across the Avalanche ecosystem.
