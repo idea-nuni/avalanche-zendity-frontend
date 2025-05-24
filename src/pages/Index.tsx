@@ -1,8 +1,13 @@
 
-import { LoginPage } from '@/components/LoginPage'
+import { DashboardLayout } from '@/components/DashboardLayout'
+import { DashboardContent } from '@/components/DashboardContent'
 
 const Index = () => {
-  return <LoginPage />
-};
+  return (
+    <DashboardLayout>
+      <DashboardContent />
+    </DashboardLayout>
+  )
+}
 
-export default Index;
+export default Index
