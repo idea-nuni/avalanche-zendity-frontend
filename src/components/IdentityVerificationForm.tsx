@@ -168,7 +168,7 @@ export function IdentityVerificationForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
+        <CardTitle className="flex items-center space-x-2 ">
           <User className="w-5 h-5" />
           <span>Submit Identity Verification</span>
         </CardTitle>
@@ -324,7 +324,7 @@ export function IdentityVerificationForm() {
             <Button
               type="submit"
               disabled={isSubmitting || isPending || isConfirming}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
             >
               {isConfirming ? (
                 <>
