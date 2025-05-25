@@ -8,15 +8,16 @@ export const config = createConfig({
   connectors: [
     injected(),
     metaMask(),
-    walletConnect({ 
-      projectId: 'your-project-id', // 您需要在 walletconnect.com 註冊獲取
-      metadata: {
-        name: 'AVAX DApp',
-        description: 'Connect to AVAX C-Chain',
-        url: 'https://yourdapp.com',
-        icons: ['https://avatars.githubusercontent.com/u/37784886']
-      }
-    }),
+    // 暫時移除 WalletConnect 以避免 QR code modal 問題
+    // walletConnect({ 
+    //   projectId: 'your-project-id', // 您需要在 walletconnect.com 註冊獲取
+    //   metadata: {
+    //     name: 'AVAX DApp',
+    //     description: 'Connect to AVAX C-Chain',
+    //     url: 'https://yourdapp.com',
+    //     icons: ['https://avatars.githubusercontent.com/u/37784886']
+    //   }
+    // }),
   ],
   transports: {
     [avalancheFuji.id]: http(),

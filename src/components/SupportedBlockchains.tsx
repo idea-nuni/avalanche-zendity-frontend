@@ -436,8 +436,8 @@ export function SupportedBlockchains() {
           <span>Supported Avalanche Networks</span>
         </CardTitle>
         <CardDescription className="text-gray-400">
-          Sync your verified identity across Avalanche C-Chain and L1 networks
-          using ICM
+          Sync your verified identity proof across Avalanche C-Chain and L1
+          networks using ICM
         </CardDescription>
       </CardHeader>
       <CardContent>
