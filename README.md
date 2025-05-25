@@ -1,73 +1,58 @@
-# Welcome to your Lovable project
 
-## Project info
+# Zendity
+<img width="626" alt="Screenshot 2025-05-25 at 2 49 05 AM" src="https://github.com/user-attachments/assets/77cf3dd3-2489-4168-86fe-2fc961b671da" />
 
-**URL**: https://lovable.dev/projects/10679347-e46f-4471-abd3-092e3b79e445
+This project is a submission for the **Avalanche London 2025 Hackathon**. It serves as the frontend interface for interacting with the [Zendity smart contracts](https://github.com/idea-nuni/Zendity-contracts) on the Avalanche blockchain.
 
-## How can I edit this code?
+## Overview
 
-There are several ways of editing your application.
 
-**Use Lovable**
+Avalanche Zendity Frontend provides a user-friendly web interface to connect wallets, interact with Zendity contracts, and manage blockchain-based assets or identities. Built primarily with TypeScript, it leverages modern frontend technologies for seamless blockchain integration.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/10679347-e46f-4471-abd3-092e3b79e445) and start prompting.
+## Features
 
-Changes made via Lovable will be committed automatically to this repo.
+- Integration with Zendity smart contracts
+- Easy wallet connection and user authentication
+- Real-time display of contract states and user information
+- Responsive and intuitive UI/UX
 
-**Use your preferred IDE**
+## Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js 16+
+- npm or yarn
 
-Follow these steps:
+### Installation
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+git clone https://github.com/moojing/avalanche-zendity-frontend.git
+cd avalanche-zendity-frontend
+npm install
+# or
+yarn install
 ```
 
-**Edit a file directly in GitHub**
+### Running the Development Server
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-**Use GitHub Codespaces**
+## Smart Contracts
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+The corresponding smart contracts for this frontend can be found at: [idea-nuni/Zendity-contracts](https://github.com/idea-nuni/Zendity-contracts)
 
-## What technologies are used for this project?
+## Contributing
 
-This project is built with:
+Pull requests and issues are welcome! Please open an issue to discuss your ideas or report bugs.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## License
 
-## How can I deploy this project?
+This project is licensed under the MIT License.
 
-Simply open [Lovable](https://lovable.dev/projects/10679347-e46f-4471-abd3-092e3b79e445) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Let me know if you’d like to add more details—such as screenshots, usage examples, or team info!
