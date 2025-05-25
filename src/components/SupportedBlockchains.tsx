@@ -25,7 +25,11 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { USER_PROOF_HUB, USER_PROOF_HUB_ECHO } from "@/constants";
+import {
+  USER_PROOF_HUB,
+  USER_PROOF_HUB_ECHO,
+  USER_PROOF_DISPATCH_ECHO,
+} from "@/constants";
 
 // Echo L1 chain configuration
 const echoL1 = {
@@ -51,6 +55,32 @@ const echoL1 = {
 const echoClient = createPublicClient({
   chain: echoL1,
   transport: http("https://subnets.avax.network/echo/testnet/rpc"),
+});
+
+// Dispatch L1 chain configuration
+const dispatchL1 = {
+  id: 779672,
+  name: "Dispatch L1 Testnet",
+  network: "dispatch-l1-testnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "AVAX",
+    symbol: "AVAX",
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://subnets.avax.network/dispatch/testnet/rpc"],
+    },
+    public: {
+      http: ["https://subnets.avax.network/dispatch/testnet/rpc"],
+    },
+  },
+} as const;
+
+// Create public client for Dispatch L1
+const dispatchClient = createPublicClient({
+  chain: dispatchL1,
+  transport: http("https://subnets.avax.network/dispatch/testnet/rpc"),
 });
 
 // Contract ABI for reading user verification status and transportProof
@@ -126,6 +156,7 @@ const supportedBlockchains: Blockchain[] = [
     chainId: 779672,
     rpcUrl: "https://subnets.avax.network/dispatch/testnet/rpc",
     subnetId: "7WtoAMPhrmh5KosDUsFL9yTcvw7YSxiKHPpdfs4JsgW47oZT5",
+    proofHubAddress: USER_PROOF_DISPATCH_ECHO,
     blockchainId:
       "0x9f3be606497285d0ffbb5ac9ba24aa60346a9b1812479ed66cb329f394a4b1c7",
   },
@@ -136,6 +167,9 @@ export function SupportedBlockchains() {
   const [isEchoVerified, setIsEchoVerified] = useState<boolean | undefined>(
     undefined
   );
+  const [isDispatchVerified, setIsDispatchVerified] = useState<
+    boolean | undefined
+  >(undefined);
   const { toast } = useToast();
   const { address, isConnected } = useAccount();
   const { writeContract, data: hash, error, isPending } = useWriteContract();
@@ -183,6 +217,32 @@ export function SupportedBlockchains() {
     checkEchoVerification();
   }, [address, isConnected]);
 
+  // Check user verification status on Dispatch L1 using custom client
+  useEffect(() => {
+    const checkDispatchVerification = async () => {
+      if (!address || !isConnected) {
+        setIsDispatchVerified(undefined);
+        return;
+      }
+
+      try {
+        const result = await dispatchClient.readContract({
+          address: USER_PROOF_DISPATCH_ECHO as `0x${string}`,
+          abi: USER_PROOF_HUB_ABI,
+          functionName: "isUserVerified",
+          args: [address as `0x${string}`],
+        });
+        setIsDispatchVerified(result as boolean);
+        console.log("isDispatchVerified from Dispatch L1 RPC:", result);
+      } catch (error) {
+        console.error("Error checking Dispatch L1 verification:", error);
+        setIsDispatchVerified(false);
+      }
+    };
+
+    checkDispatchVerification();
+  }, [address, isConnected]);
+
   // Function to get verification status for a specific blockchain
   const getVerificationStatus = (blockchain: Blockchain): boolean => {
     if (!blockchain.proofHubAddress) return false;
@@ -192,6 +252,8 @@ export function SupportedBlockchains() {
         return !!isCChainVerified;
       case "echo-l1-testnet":
         return !!isEchoVerified;
+      case "dispatch-l1-testnet":
+        return !!isDispatchVerified;
       default:
         return false;
     }
