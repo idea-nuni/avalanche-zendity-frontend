@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   useAccount,
   useReadContract,
@@ -179,6 +179,50 @@ export function SupportedBlockchains() {
       hash,
     });
 
+  // Function to check Echo L1 verification status
+  const checkEchoVerification = useCallback(async () => {
+    if (!address || !isConnected) {
+      setIsEchoVerified(undefined);
+      return;
+    }
+
+    try {
+      const result = await echoClient.readContract({
+        address: USER_PROOF_HUB_ECHO as `0x${string}`,
+        abi: USER_PROOF_HUB_ABI,
+        functionName: "isUserVerified",
+        args: [address as `0x${string}`],
+      });
+      setIsEchoVerified(result as boolean);
+      console.log("isEchoVerified from Echo L1 RPC:", result);
+    } catch (error) {
+      console.error("Error checking Echo L1 verification:", error);
+      setIsEchoVerified(false);
+    }
+  }, [address, isConnected]);
+
+  // Function to check Dispatch L1 verification status
+  const checkDispatchVerification = useCallback(async () => {
+    if (!address || !isConnected) {
+      setIsDispatchVerified(undefined);
+      return;
+    }
+
+    try {
+      const result = await dispatchClient.readContract({
+        address: USER_PROOF_DISPATCH_ECHO as `0x${string}`,
+        abi: USER_PROOF_HUB_ABI,
+        functionName: "isUserVerified",
+        args: [address as `0x${string}`],
+      });
+      setIsDispatchVerified(result as boolean);
+      console.log("isDispatchVerified from Dispatch L1 RPC:", result);
+    } catch (error) {
+      console.error("Error checking Dispatch L1 verification:", error);
+      setIsDispatchVerified(false);
+    }
+  }, [address, isConnected]);
+
   // Check user verification status on C-Chain
   const { data: isCChainVerified } = useReadContract({
     address: USER_PROOF_HUB,
@@ -193,55 +237,13 @@ export function SupportedBlockchains() {
 
   // Check user verification status on Echo L1 using custom client
   useEffect(() => {
-    const checkEchoVerification = async () => {
-      if (!address || !isConnected) {
-        setIsEchoVerified(undefined);
-        return;
-      }
-
-      try {
-        const result = await echoClient.readContract({
-          address: USER_PROOF_HUB_ECHO as `0x${string}`,
-          abi: USER_PROOF_HUB_ABI,
-          functionName: "isUserVerified",
-          args: [address as `0x${string}`],
-        });
-        setIsEchoVerified(result as boolean);
-        console.log("isEchoVerified from Echo L1 RPC:", result);
-      } catch (error) {
-        console.error("Error checking Echo L1 verification:", error);
-        setIsEchoVerified(false);
-      }
-    };
-
     checkEchoVerification();
-  }, [address, isConnected]);
+  }, [address, isConnected, checkEchoVerification]);
 
   // Check user verification status on Dispatch L1 using custom client
   useEffect(() => {
-    const checkDispatchVerification = async () => {
-      if (!address || !isConnected) {
-        setIsDispatchVerified(undefined);
-        return;
-      }
-
-      try {
-        const result = await dispatchClient.readContract({
-          address: USER_PROOF_DISPATCH_ECHO as `0x${string}`,
-          abi: USER_PROOF_HUB_ABI,
-          functionName: "isUserVerified",
-          args: [address as `0x${string}`],
-        });
-        setIsDispatchVerified(result as boolean);
-        console.log("isDispatchVerified from Dispatch L1 RPC:", result);
-      } catch (error) {
-        console.error("Error checking Dispatch L1 verification:", error);
-        setIsDispatchVerified(false);
-      }
-    };
-
     checkDispatchVerification();
-  }, [address, isConnected]);
+  }, [address, isConnected, checkDispatchVerification]);
 
   // Function to get verification status for a specific blockchain
   const getVerificationStatus = (blockchain: Blockchain): boolean => {
@@ -324,8 +326,35 @@ export function SupportedBlockchains() {
 
       // Clear syncing status
       setSyncingChains(new Set());
+
+      // Show toast about re-checking status
+      toast({
+        title: "Checking Verification Status",
+        description: "Re-checking verification status on all chains...",
+      });
+
+      // Re-check verification status on all chains after successful sync
+      setTimeout(() => {
+        checkEchoVerification();
+        checkDispatchVerification();
+
+        // Show completion toast
+        setTimeout(() => {
+          toast({
+            title: "Status Updated",
+            description:
+              "Verification status has been refreshed across all chains.",
+          });
+        }, 2000);
+      }, 5000); // Wait 5 seconds for the cross-chain message to be processed
     }
-  }, [isConfirmed, hash, toast]);
+  }, [
+    isConfirmed,
+    hash,
+    toast,
+    checkEchoVerification,
+    checkDispatchVerification,
+  ]);
 
   useEffect(() => {
     if (error) {
@@ -416,9 +445,7 @@ export function SupportedBlockchains() {
     }
 
     if (blockchain.status === "connected") {
-      return blockchain.lastSync
-        ? `Last synced: ${new Date(blockchain.lastSync).toLocaleString()}`
-        : "Connected";
+      return "Connected";
     }
 
     if (blockchain.status === "syncing") {
