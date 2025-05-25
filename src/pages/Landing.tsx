@@ -1,9 +1,8 @@
-
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { ShieldCheck, Zap, Network, ArrowRight, Sparkles } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ShieldCheck, Zap, Network, ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   return (
@@ -27,11 +26,14 @@ const Landing = () => {
             <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-2xl">
               <span className="text-black text-lg font-bold">Z</span>
             </div>
-            <span className="text-2xl font-light tracking-wide">Zidentity</span>
+            <span className="text-2xl font-light tracking-wide">Zendity</span>
           </div>
           <div className="flex items-center gap-4">
             <Link to="/app">
-              <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 font-light">
+              <Button
+                variant="ghost"
+                className="text-white/80 hover:text-white hover:bg-white/10 font-light"
+              >
                 Demo
               </Button>
             </Link>
@@ -50,9 +52,11 @@ const Landing = () => {
           <div className="mb-12">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-white/20">
               <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-sm font-light">The Future of Digital Identity</span>
+              <span className="text-sm font-light">
+                The Future of Digital Identity
+              </span>
             </div>
-            
+
             <h1 className="text-6xl md:text-8xl font-extralight mb-6 leading-tight">
               Own Your
               <br />
@@ -60,24 +64,32 @@ const Landing = () => {
                 Digital Self
               </span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-white/70 mb-4 max-w-3xl mx-auto font-light leading-relaxed">
               A universal, privacy-first identity protocol
             </p>
             <p className="text-lg text-white/50 mb-12 max-w-2xl mx-auto font-light">
-              Prove who you are across any blockchain without revealing personal data
+              Prove who you are across any blockchain without revealing personal
+              data
             </p>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Link to="/app">
-              <Button size="lg" className="bg-white text-black hover:bg-gray-100 px-8 py-4 text-lg font-medium rounded-full shadow-2xl transform hover:scale-105 transition-all duration-200">
+              <Button
+                size="lg"
+                className="bg-white text-black hover:bg-gray-100 px-8 py-4 text-lg font-medium rounded-full shadow-2xl transform hover:scale-105 transition-all duration-200"
+              >
                 Create Identity
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link to="/app">
-              <Button variant="outline" size="lg" className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg font-light rounded-full backdrop-blur-sm">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg font-light rounded-full backdrop-blur-sm"
+              >
                 Watch Demo
               </Button>
             </Link>
@@ -108,9 +120,11 @@ const Landing = () => {
             <h2 className="text-4xl md:text-5xl font-extralight mb-6">
               Simply <span className="italic">powerful</span>
             </h2>
-            <p className="text-xl text-white/70 font-light">Three pillars of digital freedom</p>
+            <p className="text-xl text-white/70 font-light">
+              Three pillars of digital freedom
+            </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="bg-gradient-to-b from-white/5 to-white/0 border-white/10 backdrop-blur-sm group hover:from-white/10 transition-all duration-500">
               <CardContent className="p-8 text-center">
@@ -119,10 +133,14 @@ const Landing = () => {
                 </div>
                 <h3 className="text-2xl font-light mb-4">Privacy First</h3>
                 <p className="text-white/70 font-light leading-relaxed mb-6">
-                  Prove anything without revealing everything. Zero-knowledge proofs keep your data yours.
+                  Prove anything without revealing everything. Zero-knowledge
+                  proofs keep your data yours.
                 </p>
                 <Link to="/app">
-                  <Button variant="ghost" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 font-light">
+                  <Button
+                    variant="ghost"
+                    className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 font-light"
+                  >
                     Learn more →
                   </Button>
                 </Link>
@@ -136,10 +154,14 @@ const Landing = () => {
                 </div>
                 <h3 className="text-2xl font-light mb-4">Universal</h3>
                 <p className="text-white/70 font-light leading-relaxed mb-6">
-                  One identity across all chains. Stop fragmenting your digital reputation.
+                  One identity across all chains. Stop fragmenting your digital
+                  reputation.
                 </p>
                 <Link to="/app">
-                  <Button variant="ghost" className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 font-light">
+                  <Button
+                    variant="ghost"
+                    className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 font-light"
+                  >
                     Explore chains →
                   </Button>
                 </Link>
@@ -153,10 +175,14 @@ const Landing = () => {
                 </div>
                 <h3 className="text-2xl font-light mb-4">Rewarding</h3>
                 <p className="text-white/70 font-light leading-relaxed mb-6">
-                  Turn reputation into rewards. Unlock perks across the ecosystem.
+                  Turn reputation into rewards. Unlock perks across the
+                  ecosystem.
                 </p>
                 <Link to="/app">
-                  <Button variant="ghost" className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 font-light">
+                  <Button
+                    variant="ghost"
+                    className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 font-light"
+                  >
                     Start earning →
                   </Button>
                 </Link>
@@ -171,19 +197,27 @@ const Landing = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="group">
-              <div className="text-5xl font-extralight text-blue-400 mb-2 group-hover:scale-110 transition-transform duration-200">15K+</div>
+              <div className="text-5xl font-extralight text-blue-400 mb-2 group-hover:scale-110 transition-transform duration-200">
+                15K+
+              </div>
               <p className="text-white/50 font-light text-sm">Verified Users</p>
             </div>
             <div className="group">
-              <div className="text-5xl font-extralight text-purple-400 mb-2 group-hover:scale-110 transition-transform duration-200">8</div>
+              <div className="text-5xl font-extralight text-purple-400 mb-2 group-hover:scale-110 transition-transform duration-200">
+                8
+              </div>
               <p className="text-white/50 font-light text-sm">Chains</p>
             </div>
             <div className="group">
-              <div className="text-5xl font-extralight text-cyan-400 mb-2 group-hover:scale-110 transition-transform duration-200">99.9%</div>
+              <div className="text-5xl font-extralight text-cyan-400 mb-2 group-hover:scale-110 transition-transform duration-200">
+                99.9%
+              </div>
               <p className="text-white/50 font-light text-sm">Uptime</p>
             </div>
             <div className="group">
-              <div className="text-5xl font-extralight text-green-400 mb-2 group-hover:scale-110 transition-transform duration-200">&lt;2s</div>
+              <div className="text-5xl font-extralight text-green-400 mb-2 group-hover:scale-110 transition-transform duration-200">
+                &lt;2s
+              </div>
               <p className="text-white/50 font-light text-sm">Verification</p>
             </div>
           </div>
@@ -203,15 +237,22 @@ const Landing = () => {
               Join thousands building the future of identity
             </p>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
             <Link to="/app">
-              <Button size="lg" className="bg-white text-black hover:bg-gray-100 px-12 py-4 text-xl font-medium rounded-full shadow-2xl transform hover:scale-105 transition-all duration-200">
+              <Button
+                size="lg"
+                className="bg-white text-black hover:bg-gray-100 px-12 py-4 text-xl font-medium rounded-full shadow-2xl transform hover:scale-105 transition-all duration-200"
+              >
                 Get Started
               </Button>
             </Link>
             <Link to="/app">
-              <Button variant="outline" size="lg" className="border-2 border-white/30 text-white hover:bg-white/10 px-12 py-4 text-xl font-light rounded-full">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-2 border-white/30 text-white hover:bg-white/10 px-12 py-4 text-xl font-light rounded-full"
+              >
                 Learn More
               </Button>
             </Link>
@@ -227,14 +268,16 @@ const Landing = () => {
               <div className="w-8 h-8 bg-white rounded-2xl flex items-center justify-center">
                 <span className="text-black text-sm font-bold">Z</span>
               </div>
-              <span className="text-xl font-light">Zidentity</span>
+              <span className="text-xl font-light">Zendity</span>
             </div>
-            <p className="text-white/40 font-light text-sm">© 2024 Building tomorrow's identity layer</p>
+            <p className="text-white/40 font-light text-sm">
+              © 2024 Building tomorrow's identity layer
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Landing
+export default Landing;
